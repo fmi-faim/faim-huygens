@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
@@ -38,7 +38,7 @@ Issues = "https://github.com/fmi-faim/faim-huygens/issues"
 Source = "https://github.com/fmi-faim/faim-huygens"
 
 [tool.hatch.version]
-path = "src/faim_huygens/__about__.py"
+source = "vcs"
 
 [tool.hatch.envs.default]
 dependencies = [
