@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 [![PyPI - Version](https://img.shields.io/pypi/v/faim-huygens.svg)](https://pypi.org/project/faim-huygens)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/faim-huygens.svg)](https://pypi.org/project/faim-huygens)
 [![REUSE status](https://api.reuse.software/badge/github.com/fmi-faim/faim-huygens)](https://api.reuse.software/info/github.com/fmi-faim/faim-huygens)
+[![DOI](https://zenodo.org/badge/595567176.svg)](https://zenodo.org/badge/latestdoi/595567176)
 
 -----
 
