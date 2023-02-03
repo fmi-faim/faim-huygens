@@ -28,7 +28,8 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "pyparsing"
+  "pyparsing",
+  "pydantic"
 ]
 dynamic = ["version"]
 
