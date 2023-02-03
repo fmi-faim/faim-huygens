@@ -54,7 +54,7 @@ def _as_tcl_string(value: (Union[str, list, dict])):
         return '{' + ' '.join([f"{key} {_as_tcl_string(value[key])}" for key in value]) + '}'
     elif isinstance(value, list):
         return '{' + ' '.join([_as_tcl_string(item) for item in value]) + '}'
-    elif ' ' in value:
-        return '{' + value + '}'
+    elif ' ' in str(value):
+        return '{' + str(value) + '}'
     else:
-        return value
+        return str(value)
