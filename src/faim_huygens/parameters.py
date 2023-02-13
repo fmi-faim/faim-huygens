@@ -27,6 +27,7 @@ class ImagingDirection(Enum):
 
 
 class Microscopy(BaseModel):
+    """Microscopy metadata."""
     micr: MicroscopeType = MicroscopeType.SPINNING_DISK  # only spinning-disk supported so far
     n_channels: int = 1  # 2
     ex: List[int] = [488]  # [488, 561]
@@ -54,6 +55,8 @@ def create_config(input_files: List[str] = ['/path/to/input_image.ome.tif'],
                   microscopy_params: Microscopy = Microscopy(),
                   deconvolution_params: Deconvolution = Deconvolution(),
                   logger=logging) -> dict:
+    output_paths = []
+    extension = '.ics'  # TODO make configurable
     result = {
         'info': {
             'title': 'Batch processing template (faim-huygens)',
@@ -69,7 +72,7 @@ def create_config(input_files: List[str] = ['/path/to/input_image.ome.tif'],
             'OMP_DYNAMIC': '1',
             'timeOut': '100000',
             'exportFormat': {
-                'type': 'ics',
+                'type': 'ics',  # TODO make configurable
                 'multidir': '0',
                 'cmode': 'scale',
             },
@@ -115,7 +118,10 @@ def create_config(input_files: List[str] = ['/path/to/input_image.ome.tif'],
 
         result[workflow_id]['taskList'].append('imgSave')
 
-    return result
+        out_path = Path(result_dir, Path(input_file).stem + extension)
+        output_paths.append(out_path)
+
+    return output_paths, result
 
 
 def _create_setp(params: Microscopy) -> dict:
