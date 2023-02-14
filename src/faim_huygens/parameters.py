@@ -19,11 +19,22 @@ class MicroscopeType(Enum):
 
 
 class PSFMode(Enum):
+    """PSF Mode (only 'auto' supported currently)"""
     AUTOMATIC = 'auto'
 
 
 class ImagingDirection(Enum):
     UPWARD = 'upward'
+
+
+class ExportFormat(Enum):
+    HDF5 = 'hdf5'
+    HDF5_UNCOMPRESSED = 'hdf5uncompr'
+    ICS = 'ics'
+    ICS2 = 'ics2'
+    OME_TIFF = 'ometiff'
+    OME_XML = 'ome'
+    IMARIS = 'imaris'
 
 
 class Microscopy(BaseModel):
@@ -38,6 +49,7 @@ class Microscopy(BaseModel):
     pr: float = 1250  # pinhole radius
     ps: float = 24.98  # pinhole spacing
     imaging_dir: ImagingDirection = ImagingDirection.UPWARD
+    "Imaging direction"
     scale_x: float = None
     scale_y: float = None
     scale_z: float = None
@@ -50,13 +62,25 @@ class Deconvolution(BaseModel):
     q: float = 0.01
 
 
+_FORMAT_EXTENSIONS = {
+    ExportFormat.HDF5: '.h5',
+    ExportFormat.HDF5_UNCOMPRESSED: '.h5',
+    ExportFormat.ICS: '.ics',
+    ExportFormat.ICS2: '.ics',
+    ExportFormat.OME_TIFF: '.ome.tiff',
+    ExportFormat.OME_XML: '.ome.xml',
+    ExportFormat.IMARIS: '.ims',
+}
+
+
 def create_config(input_files: List[str] = ['/path/to/input_image.ome.tif'],
                   result_dir: str = '/path/to/resultDir',
+                  export_format: ExportFormat = ExportFormat.ICS,
                   microscopy_params: Microscopy = Microscopy(),
                   deconvolution_params: Deconvolution = Deconvolution(),
                   logger=logging) -> dict:
     output_paths = []
-    extension = '.ics'  # TODO make configurable
+    extension = _FORMAT_EXTENSIONS[export_format]
     result = {
         'info': {
             'title': 'Batch processing template (faim-huygens)',
@@ -72,7 +96,7 @@ def create_config(input_files: List[str] = ['/path/to/input_image.ome.tif'],
             'OMP_DYNAMIC': '1',
             'timeOut': '100000',
             'exportFormat': {
-                'type': 'ics',  # TODO make configurable
+                'type': export_format.value,
                 'multidir': '0',
                 'cmode': 'scale',
             },

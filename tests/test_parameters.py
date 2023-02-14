@@ -4,7 +4,7 @@
 from pathlib import Path
 
 import pytest
-from faim_huygens.parameters import create_config
+from faim_huygens.parameters import create_config, ExportFormat
 
 
 @pytest.fixture
@@ -35,7 +35,7 @@ def expected_dict():
 
 def test_create_config(expected_dict):
     out_paths, config = create_config(
-
+        export_format=ExportFormat.ICS
     )
     print(config)
     # overwrite date to effectively ignore it
