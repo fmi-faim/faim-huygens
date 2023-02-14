@@ -1,9 +1,10 @@
 # SPDX-FileCopyrightText: 2023 Friedrich Miescher Institute for Biomedical Research (FMI), Basel (Switzerland)
 #
 # SPDX-License-Identifier: MIT
+from pathlib import Path
 
 import pytest
-from faim_huygens.parameters import create_config
+from faim_huygens.parameters import create_config, ExportFormat
 
 
 @pytest.fixture
@@ -33,10 +34,11 @@ def expected_dict():
 
 
 def test_create_config(expected_dict):
-    config = create_config(
-
+    out_paths, config = create_config(
+        export_format=ExportFormat.ICS
     )
     print(config)
     # overwrite date to effectively ignore it
     config['info']['date'] = expected_dict['info']['date']
     assert expected_dict == config
+    assert Path('/path/to/resultDir/input_image.ome.ics') == out_paths[0]
